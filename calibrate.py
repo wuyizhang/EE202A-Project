@@ -4,6 +4,7 @@ from bluepy import sensortag
 from bluepy.btle import Scanner, DefaultDelegate
 import time
 import sys
+import cali_funcs
 
 # Generic Access Profile Data Type Value
 COMPLETE_LOCAL_NAME = 0X09
@@ -61,8 +62,8 @@ def main():
     #print(pos_m)  
     while i < CALI_OFFSET_SAMPLES:
         for index in range(len(tags)):
-            #data[index].append(tags[index].magnetometer.read())
-            data[index].append([20,20,20])
+            data[index].append(tags[index].magnetometer.read())
+            #data[index].append([20,20,20])
         i=i+1
 
     offsets=len(tags)*[[0,0,0]]
@@ -79,8 +80,8 @@ def main():
         tmp=input('Press Enter to continue')
         for index in range(len(tags)):
             for i in range(CALI_POS_SAMPLES):
-                #data[index].append(tags[index].magnetometer.read())
-                data[index].append([20+(index+i)*10,20+(index+i)*10,20+10*(index+i)])
+                data[index].append(tags[index].magnetometer.read())
+                #data[index].append([20+(index+i)*10,20+(index+i)*10,20+10*(index+i)])
     cali_para=[]
     #print(pos_m)
     for i in range(len(tags)):
@@ -89,6 +90,8 @@ def main():
         cali_para[i]=cali_funcs.calibrateSensor(data[i],pos_m, h, pos_l,CALI_ITER, offsets[i]).copy()
 
     print('Calibration Finished')
+    print('Calibration Parameters: ')
+    print(cali_para)
     tmp=input('Press Enter to continue')
         
         
